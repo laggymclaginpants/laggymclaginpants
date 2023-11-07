@@ -1,0 +1,11 @@
+fc = "line"  
+sr = arcpy.Describe(fc).spatialReference  
+with arcpy.da.UpdateCursor(fc,"SHAPE@",spatial_reference=sr) as cursor:  
+    for row in cursor:  
+        vertices = []  
+        for part in row[0]:  
+            for pnt in part:  
+                print type(pnt)  
+                vertices.append(pnt)  
+        row[0] = arcpy.Polyline(arcpy.Array(vertices[::-1]))  
+        cursor.updateRow(row)
